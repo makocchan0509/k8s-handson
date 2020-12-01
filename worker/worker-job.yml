@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: worker
+spec:
+  template:
+    spec:
+      containers:
+      - name: worker
+        image: asia.gcr.io/common-proj-290514/go-worker:1.0
+        env:
+          - name: RABBIT_URL
+            value: "rabbitmq:5672"
+          - name: RABBIT_USER
+            valueFrom:
+              secretKeyRef:
+                 name: rabbitmq-secret
+                 key: RABBITMQ_DEFAULT_USER
+          - name: RABBIT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                 name: rabbitmq-secret
+                 key: RABBITMQ_DEFAULT_PASS
+          - name: RABBIT_QUEUE_NAME
+            value: "dogOrCatQ"
+          - name: MYSQL_HOST
+            value: "mysql-svc"
+          - name: MYSQL_PORT
+            value: "3306"
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                 name: mysql-secret
+                 key: MYSQL_USER
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                 name: mysql-secret
+                 key: MYSQL_PASSWORD
+          - name: MYSQL_DBNAME
+            valueFrom:
+              secretKeyRef:
+                 name: mysql-secret
+                 key: MYSQL_DATABASE
+      restartPolicy: Never
+  backoffLimit: 4

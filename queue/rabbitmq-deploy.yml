@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dogorcat
+    type: queue
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dogorcat
+      type: queue
+  template:
+    metadata:
+      labels:
+        app: dogorcat
+        type: queue
+    spec:
+      containers:
+      - image: rabbitmq:3.8.6-management-alpine
+        name: rabbitmq
+        ports:
+        - containerPort: 5672
+          name: worker
+        - containerPort: 15672
+          name: admin
+        envFrom:
+        - secretRef:
+           name: rabbitmq-secret
+
+    
+        
