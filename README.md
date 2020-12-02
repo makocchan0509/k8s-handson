@@ -109,7 +109,7 @@
 
 9. RabbitMQ,Workerの作成
 
-``` 
+  ```
   cd ./../queue
 
   #Deploymentの作成
@@ -128,74 +128,73 @@
 
   #Worker Jobの作成
   k apply -f worker-job.yml
-```
+  ```
 
- 10. Webappの作成
+10. Webappの作成
 
-     ```
-     cd ./../webapp
+   ```
+   cd ./../webapp
      
-     #webapp deploymentの作成
-     k apply -f webapp.yml
+   #webapp deploymentの作成
+   k apply -f webapp.yml
      
-     #webapp ClusterIPの作成
-     k apply -f webapp-svc.yml	
-     ```
+   #webapp ClusterIPの作成
+   k apply -f webapp-svc.yml	
+   ```
 
-	11. Nginxの作成
+11. Nginxの作成
 
-     ```
-     cd ./../frontend
+   ```
+   cd ./../frontend
      
-     #nginx.confをconfigMapへ登録
-     k create cm nginx-conf --from-file=nginx.conf
+   #nginx.confをconfigMapへ登録
+   k create cm nginx-conf --from-file=nginx.conf
      
-     #nginx Deploymentの作成
-     k apply -f nginx-deploy.yml
+   #nginx Deploymentの作成
+   k apply -f nginx-deploy.yml
      
-     #nginx NodePort Serviceの作成
-     k apply -f nginx-svc.yml
-     ```
+   #nginx NodePort Serviceの作成
+   k apply -f nginx-svc.yml
+   ```
 
-	12. Ingressリソースの作成
+12. Ingressリソースの作成
 
-     ```
-     #Ingressリソースの作成
-     k apply -f ingress.yml
+   ```
+   #Ingressリソースの作成
+   k apply -f ingress.yml
      
-     #結果確認
-     k get ing
+   #結果確認
+   k get ing
      
-     NAME      HOSTS   ADDRESS         PORTS   AGE
-     ingress   *       34.120.75.233   80      12h
+   NAME      HOSTS   ADDRESS         PORTS   AGE
+   ingress   *       34.120.75.233   80      12h
      
-     #ADDRESSのIPアドレスをメモしてブラウザより以下のURLへアクセス
-     http://ADDRESS/question
-     ```
+   #ADDRESSのIPアドレスをメモしてブラウザより以下のURLへアクセス
+   http://ADDRESS/question
+   ```
 
-	13. APのバージョンアップデプロイ
+13. APのバージョンアップデプロイ
 
-     ```
-     #Deploymentに対するイメージの更新
-     k set image deploy webapp webapp=asia.gcr.io/common-proj-290514/go-webapp:1.3
+   ```
+   #Deploymentに対するイメージの更新
+   k set image deploy webapp webapp=asia.gcr.io/common-proj-290514/go-webapp:1.3
      
-     #ADDRESSのIPアドレスをメモしてブラウザより以下のURLへアクセス
-     http://ADDRESS/question
-     ```
+   #ADDRESSのIPアドレスをメモしてブラウザより以下のURLへアクセス
+   http://ADDRESS/question
+   ```
 
-	14. 更新前のバージョンへロールバック
+14. 更新前のバージョンへロールバック
 
-     ```
-     k rollout undo deploy webapp
+   ```
+   k rollout undo deploy webapp
      
-     #ADDRESSのIPアドレスをメモしてブラウザより以下のURLへアクセス
-     http://ADDRESS/question
-     ```
+   #ADDRESSのIPアドレスをメモしてブラウザより以下のURLへアクセス
+   http://ADDRESS/question
+   ```
 
-	15. クリーン
+15. クリーン
 
-     ```
-     k -n (your-namespace) delete ing,svc,deploy,sts,cm,secret,pvc --all
-     ```
-
-     
+   ```
+   k -n (your-namespace) delete ing,svc,deploy,sts,cm,secret,pvc --all
+   ```
+  
