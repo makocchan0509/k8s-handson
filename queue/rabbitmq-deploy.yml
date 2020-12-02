@@ -28,6 +28,13 @@ spec:
         envFrom:
         - secretRef:
            name: rabbitmq-secret
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 15672
+          initialDelaySeconds: 5
+          periodSeconds: 5
 
     
         

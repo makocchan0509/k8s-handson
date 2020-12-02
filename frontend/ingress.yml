@@ -6,23 +6,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /question
+      - path: /*
         backend:
           serviceName: nginx-svc
           servicePort: 80
-      - path: /result
-        backend:
-          serviceName: nginx-svc
-          servicePort: 80
-      - path: /answer
-        backend:
-          serviceName: nginx-svc
-          servicePort: 80
-      - path: /resources
-        backend:
-          serviceName: nginx-svc
-          servicePort: 80
-      - path: /
-        backend:
-          serviceName: rabbitmq-admin
-          servicePort: 15672
