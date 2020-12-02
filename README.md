@@ -16,6 +16,7 @@
 2. GKE Clusterを作成
 
    ```
+   #作成済みなので、スキップしてください。
    gcloud container clusters create community-common-cluster --zone asia-northeast1-b --node-locations asia-northeast1-b
    ```
 
@@ -122,6 +123,7 @@
   k apply -f rabbit-svc-admin.yml
 
   #GCP上のFirewallにNodePortへのアクセスを許可するように設定追加
+  #作成済みなので、スキップしてください。
   gcloud compute firewall-rules create gke-default-nodeport --allow tcp:30798 --source-ranges="0.0.0.0/0" --target-tags=gke-community-common-cluster-e471e6cb-node --description="RabbitMQ Admin Nodeport"
 
   cd ./../worker
