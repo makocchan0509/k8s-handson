@@ -9,14 +9,14 @@
    ```
    gcloud init
    # 自身のGoogleアカウントをCLIへ紐付けする
-   # Projectはcommon-proj-290514を選択
+   # Projectはcommon-proj-290514等を選択
    # asia-northeast1-b (東京のゾーンをデフォルトゾーンへ設定)
    ```
 
 2. GKE Clusterを作成
 
    ```
-   #作成済みなので、スキップしてください。
+   #community-common-clusterの部分を任意の名前にしてください。
    gcloud container clusters create community-common-cluster --zone asia-northeast1-b --node-locations asia-northeast1-b
    ```
 
@@ -123,10 +123,12 @@
   k apply -f rabbitmq-svc-worker.yml
 
   #コンソールアクセス用 NodePort Serviceの作成
-  k apply -f rabbit-svc-admin.yml
+  k apply -f rabbitmq-svc-admin.yml
+  
+  ＃NodePort番号を取得
+  NODEPORT=`k get svc rabbitmq-admin -o=jsonpath='{.spec.ports[0].nodePort}'`
 
   #GCP上のFirewallにNodePortへのアクセスを許可するように設定追加
-  #作成済みなので、スキップしてください。
   gcloud compute firewall-rules create gke-default-nodeport-$NODEPORT --allow tcp:$NODEPORT --source-ranges="0.0.0.0/0" --target-tags=gke-community-common-cluster-e471e6cb-node --description="RabbitMQ Admin Nodeport"
 
   cd ./../worker
