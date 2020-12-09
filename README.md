@@ -40,11 +40,14 @@
 4. Clusterで使用するNameSpaceの設定(個人のリソース棲み分けのため)
 
    ```
+   #NameSpaceの設定
+   NAMESPACE=(your-namespace)
+   
    #NameSpaceの作成
-   k create ns (your-namespace)
+   k create ns $NAMESPACE
    
    #デフォルトNameSpaceの設定
-   k config set-context $(kubectl config current-context) --namespace=(your-namespace)
+   k config set-context $(kubectl config current-context) --namespace=$NAMESPACE
    ```
 
    
@@ -124,7 +127,7 @@
 
   #GCP上のFirewallにNodePortへのアクセスを許可するように設定追加
   #作成済みなので、スキップしてください。
-  gcloud compute firewall-rules create gke-default-nodeport --allow tcp:30798 --source-ranges="0.0.0.0/0" --target-tags=gke-community-common-cluster-e471e6cb-node --description="RabbitMQ Admin Nodeport"
+  gcloud compute firewall-rules create gke-default-nodeport-$NODEPORT --allow tcp:$NODEPORT --source-ranges="0.0.0.0/0" --target-tags=gke-community-common-cluster-e471e6cb-node --description="RabbitMQ Admin Nodeport"
 
   cd ./../worker
 
@@ -197,6 +200,8 @@
 15. クリーン
 
    ```
-   k -n (your-namespace) delete ing,svc,deploy,sts,cm,secret,pvc --all
+   k -n $NAMESPACE delete ing,svc,job,deploy,sts,cm,secret,pvc --all
+   k delete ns $NAMESPACE
+   gcloud compute firewall-rules delete gke-default-nodeport-$NODEPORT
    ```
-  
+
